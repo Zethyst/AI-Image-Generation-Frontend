@@ -1,3 +1,4 @@
+"use client"
 import { auth, provider } from "./firebaseConfig";
 import { signInWithPopup } from "firebase/auth";
 
