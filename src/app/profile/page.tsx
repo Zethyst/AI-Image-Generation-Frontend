@@ -15,6 +15,7 @@ import {
     DropdownMenuSeparator,
   } from "@/components/ui/dropdown-menu";
   import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { useRouter } from "next/navigation";
 
 library.add(faTrash, faPenToSquare);
 
@@ -33,9 +34,38 @@ interface DataItem {
 }
 
 const Page = () => {
+  const router = useRouter();
   const [data, setData] = useState<DataItem[]>([]);
   const [isMobile, setIsMobile] = useState(false);
   const [loading, setLoading] = useState(true);
+
+  const handleLogin = () => {
+    router.replace("/login");
+    setUserProfile({
+      name: "Zethyst",
+      email: "zethyst@protonmail.com",
+    });
+  };
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setUserProfile(null);
+    sessionStorage.removeItem("user");
+    window.location.reload();
+  };
+
+  function extractInitials(displayName:string) {
+    // Step 1: Remove prefix (if any)
+    const namePart = displayName.replace(/^\d+_/, ""); // Remove leading digits and underscore
+    
+    // Step 2: Split the name into words
+    const nameParts = namePart.split(" ");
+    
+    // Step 3: Extract initials
+    const initials = nameParts.map(part => part.charAt(0)).join("");
+    
+    return initials;
+  }
 
   function formatDate(dateString: any): string {
     const date = new Date(dateString);
@@ -127,19 +157,7 @@ const Page = () => {
   }, []);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
-
-  const handleLogin = () => {
-    setIsLoggedIn(true);
-    setUserProfile({
-      name: "Zethyst",
-      email: "zethyst@protonmail.com",
-    });
-  };
-
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    setUserProfile(null);
-  };
+  const [username, setUsername] = useState("");
 
   const [date, setDate] = useState<string>("");
 
@@ -152,7 +170,12 @@ const Page = () => {
       minute: "numeric",
       hour12: true,
     };
-
+    const user = JSON.parse(sessionStorage.getItem("user") as string);
+    if (user) {
+      setIsLoggedIn(true);
+      let initials = extractInitials(user.displayName);
+      setUsername(initials);
+    }
     const updateDate = () => {
       const now = new Date();
       setDate(now.toLocaleDateString("en-US", options));
@@ -183,7 +206,7 @@ const Page = () => {
                 <button className="p-2 bg-white rounded-full shadow-md">
                   <Avatar>
                     <AvatarImage src="/placeholder-user.jpg" />
-                    <AvatarFallback>JD</AvatarFallback>
+                    <AvatarFallback>{username}</AvatarFallback>
                   </Avatar>
                 </button>
               </DropdownMenuTrigger>
@@ -221,7 +244,7 @@ const Page = () => {
         </div>
       </header>
 
-      <div className="absolute top-24 md:top-7 left-[50%] translate-x-[-50%] w-72 text-center px-4 py-2 bg-white rounded-full shadow-lg text-gray-500 font-semibold">
+      <div className="absolute top-24 md:top-7 left-[50%] translate-x-[-50%] w-72 text-center px-4 py-2 bg-[#1b1a1a] rounded-full shadow-lg text-gray-100 font-semibold">
         {date}
       </div>
       <div className="mt-20 w-full flex flex-col justify-center items-center">

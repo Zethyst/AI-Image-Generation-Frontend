@@ -22,11 +22,12 @@ interface UserProfile {
 
 const Component: React.FC = () => {
   const router = useRouter();
+  const [username, setUsername] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
 
   const handleLogin = () => {
-    setIsLoggedIn(true);
+    router.replace("/login");
     setUserProfile({
       name: "Zethyst",
       email: "zethyst@protonmail.com",
@@ -36,7 +37,23 @@ const Component: React.FC = () => {
   const handleLogout = () => {
     setIsLoggedIn(false);
     setUserProfile(null);
+    sessionStorage.removeItem("user");
+    window.location.reload();
   };
+
+  function extractInitials(displayName:string) {
+    // Step 1: Remove prefix (if any)
+    const namePart = displayName.replace(/^\d+_/, ""); // Remove leading digits and underscore
+    
+    // Step 2: Split the name into words
+    const nameParts = namePart.split(" ");
+    
+    // Step 3: Extract initials
+    const initials = nameParts.map(part => part.charAt(0)).join("");
+    
+    return initials;
+  }
+  
 
   const [date, setDate] = useState<string>("");
 
@@ -49,6 +66,12 @@ const Component: React.FC = () => {
       minute: "numeric",
       hour12: true,
     };
+    const user = JSON.parse(sessionStorage.getItem("user") as string);
+    if (user) {
+      setIsLoggedIn(true);
+      let initials = extractInitials(user.displayName);
+      setUsername(initials);
+    }
 
     const updateDate = () => {
       const now = new Date();
@@ -80,7 +103,7 @@ const Component: React.FC = () => {
                 <button className="p-2 bg-white rounded-full shadow-md">
                   <Avatar>
                     <AvatarImage src="/placeholder-user.jpg" />
-                    <AvatarFallback>JD</AvatarFallback>
+                    <AvatarFallback>{username}</AvatarFallback>
                   </Avatar>
                 </button>
               </DropdownMenuTrigger>
@@ -191,7 +214,7 @@ const Component: React.FC = () => {
             </CardContent>
           </Card>
         </div>
-        <div className="mt-6 flex justify-center space-x-4">
+        <div className="mt-16 flex justify-center space-x-4">
           <Link
             href="/explore"
             className="inline-flex items-center rounded-full bg-primary px-10  py-3 font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"

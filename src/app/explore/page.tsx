@@ -17,6 +17,7 @@ import Image3 from "@/assets/psychedelic-girl-illustration.jpg";
 import Link from "next/link";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import useViewport from "../viewportCheck";
 
 import {
   faFire,
@@ -31,7 +32,7 @@ import {
   faRss,
 } from "@fortawesome/free-solid-svg-icons";
 import { faSquareFull, faCircle } from "@fortawesome/free-regular-svg-icons";
-
+import { useRouter } from "next/navigation";
 library.add(
   faFire,
   faCalendarDay,
@@ -50,21 +51,39 @@ interface UserProfile {
   email: string;
 }
 function page() {
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
-
-  const handleLogin = () => {
-    setIsLoggedIn(true);
-    setUserProfile({
-      name: "John Doe",
-      email: "john@example.com",
-    });
-  };
-
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    setUserProfile(null);
-  };
+    const router = useRouter();
+    const isMobile = useViewport();
+    const [username, setUsername] = useState("");
+    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+    const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+  
+    const handleLogin = () => {
+      router.replace("/login");
+      setUserProfile({
+        name: "Zethyst",
+        email: "zethyst@protonmail.com",
+      });
+    };
+  
+    const handleLogout = () => {
+      setIsLoggedIn(false);
+      setUserProfile(null);
+      sessionStorage.removeItem("user");
+      window.location.reload();
+    };
+  
+    function extractInitials(displayName:string) {
+      // Step 1: Remove prefix (if any)
+      const namePart = displayName.replace(/^\d+_/, ""); // Remove leading digits and underscore
+      
+      // Step 2: Split the name into words
+      const nameParts = namePart.split(" ");
+      
+      // Step 3: Extract initials
+      const initials = nameParts.map(part => part.charAt(0)).join("");
+      
+      return initials;
+    }
 
   const [date, setDate] = useState<string>("");
 
@@ -77,7 +96,12 @@ function page() {
       minute: "numeric",
       hour12: true,
     };
-
+    const user = JSON.parse(sessionStorage.getItem("user") as string);
+    if (user) {
+      setIsLoggedIn(true);
+      let initials = extractInitials(user.displayName);
+      setUsername(initials);
+    }
     const updateDate = () => {
       const now = new Date();
       setDate(now.toLocaleDateString("en-US", options));
@@ -105,7 +129,7 @@ function page() {
                 <button className="p-2 bg-white rounded-full shadow-md">
                   <Avatar>
                     <AvatarImage src="/placeholder-user.jpg" />
-                    <AvatarFallback>JD</AvatarFallback>
+                    <AvatarFallback>{username}</AvatarFallback>
                   </Avatar>
                 </button>
               </DropdownMenuTrigger>
@@ -173,9 +197,9 @@ function page() {
         ))}
       </div>
 
-      <main className="mt-64 md:mt-32 text-center flex justify-center items-center flex-col container mx-auto">
-        <div className="grid gap-6 mt-12 md:grid-cols-3" style={{gridTemplateColumns: "masonry"}}>
-          <Card className="p-4">
+      <main className="mt-64 md:mt-32 text-center flex justify-center items-center flex-col ">
+        <div className={`${isMobile?"grid":"container"} gap-6 mt-12`} style={{gridTemplateColumns: "masonry"}}>
+          <Card className={`p-4 ${isMobile?"":"item"}`}>
             <div className="relative rounded-xl hover:custom-inner-shadow">
               <Image src={Image1} alt="Image-1" className="rounded-xl"></Image>
             </div>
@@ -190,7 +214,7 @@ function page() {
               </div>
             </CardContent>
           </Card>
-          <Card className="p-4">
+          <Card className={`p-4 ${isMobile?"":"item"}`}>
             <Image src={Image2} alt="Image-2" className="rounded-xl"></Image>
             <CardContent className="space-y-4 py-4">
               <div>
@@ -201,7 +225,7 @@ function page() {
               </div>
             </CardContent>
           </Card>
-          <Card className="p-4">
+          <Card className={`p-4 ${isMobile?"":"item"}`}>
             <Image src={Image3} alt="Image-3" className="rounded-xl"></Image>
             <CardContent className="space-y-4 py-4">
               <div>

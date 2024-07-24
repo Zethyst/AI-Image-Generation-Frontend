@@ -8,7 +8,6 @@ const firebaseConfig = {
     storageBucket: "social-media-login-page.appspot.com",
     messagingSenderId: "14651204568",
     appId: "1:14651204568:web:36adba86f185b8adb388ad",
-    databaseURL:"https://social-media-login-page-default-rtdb.firebaseio.com/"
   };
 
 const app = initializeApp(firebaseConfig);

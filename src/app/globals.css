@@ -59,8 +59,30 @@
   }
 }
 
-@layer base {
+.container {
+  display: flex;
+  flex-flow: column wrap;
+  align-content: space-between;
+  /* Your container needs a fixed height, and it 
+   * needs to be taller than your tallest column. */
+  height: 665px;
+}
+.item {
+  width: 32%;
+}
 
+/* Re-order items into 3 rows */
+.item:nth-child(3n+1) { order: 1; }
+.item:nth-child(3n+2) { order: 2; }
+.item:nth-child(3n)   { order: 3; }
+
+/* Force new columns */
+.container::before,
+.container::after {
+  content: "";
+  flex-basis: 100%;
+  width: 0;
+  order: 2;
 }
 
 .custom-inner-shadow {
@@ -82,6 +104,24 @@
 
 .custom-inner-shadow:hover::before {
   opacity: 1;
+}
+.line::after{
+content: " ";
+position: absolute;
+height: 1px;
+width: 80px;
+background: rgb(208, 205, 205);
+top: 15px;
+right: 10px;
+}
+.line::before{
+content: " ";
+position: absolute;
+height: 1px;
+width: 80px;
+background: #d0cdcd;
+top: 15px;
+left: 10px;
 }
 input{
   outline: none !important;
