@@ -58,6 +58,32 @@
     --chart-5: 340 75% 55%;
   }
 }
+@layer utilities {
+
+  .color:nth-child(1) {
+    @apply bottom-[-200px] left-[550px] w-[300px] h-[400px] bg-[#edcfabc2] ;
+  }
+  .color:nth-child(2) {
+    @apply bottom-[320px] right-[120px] w-[300px] h-[300px] bg-[#f8e0c2a9];
+  }
+  .color:nth-child(3) {
+    @apply bottom-[520px] left-[20px] w-[300px] h-[300px] bg-[#f8e0c2b4];
+  }
+  .dark .dark-color:nth-child(1) {
+    @apply bottom-[-200px] left-[550px] w-[300px] h-[400px] bg-[#0066ff60];
+  }
+  .dark .dark-color:nth-child(2) {
+    @apply bottom-[320px] right-[120px] w-[300px] h-[300px] bg-[#282474b6];
+  }
+  .dark .dark-color:nth-child(3) {
+    @apply bottom-[520px] left-[20px] w-[300px] h-[300px] bg-[#28247499];
+  }
+
+  .dark .dark-bg{
+    @apply bg-black
+  }
+}
+
 
 .container {
   display: flex;
@@ -137,19 +163,12 @@ input{
   font-weight: bold;
 }
 
-section .color {
+section .color, section .dark-color {
   position: fixed;
   filter: blur(150px);
   z-index: -1;
 }
 
-/* section .color:nth-child(1) {
-  bottom: 50px;
-  left: 70px;
-  width: 600px;
-  height: 600px;
-  background-color: #e435ff77;
-} */
 section .color:nth-child(1) {
   bottom: -200px;
   left: 550px;
@@ -171,6 +190,7 @@ section .color:nth-child(3) {
   height:300px;
   background-color: #f8e0c2b4;
 }
+
 @media (max-width: 768px) {
   section .color:nth-child(1) {
     bottom: 180px;

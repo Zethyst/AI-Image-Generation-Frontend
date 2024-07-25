@@ -16,11 +16,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${inter.className} dark:dark-bg`}>
         <section className="">
-          <div className="color"></div>
-          <div className="color"></div>
-          <div className="color"></div>
+          <div className="color dark:dark-color"></div>
+          <div className="color dark:dark-color"></div>
+          <div className="color dark:dark-color"></div>
           {children}
         </section>
       </body>

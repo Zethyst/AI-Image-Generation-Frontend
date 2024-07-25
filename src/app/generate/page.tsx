@@ -9,17 +9,8 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-} from "@/components/ui/dropdown-menu";
 import Image from "next/image";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useState } from "react";
-import Image1 from "../../assets/macro-eye-iris-details.jpg";
 
 export default function Component() {
   const [imageSrc, setImageSrc] = useState("");
@@ -29,10 +20,10 @@ export default function Component() {
   };
   return (
     <div className="flex min-h-screen">
-      <aside className="w-1/4 p-6 bg-transparent border-r">
+      <aside className="w-1/4 p-6 bg-transparent ">
         <div className="space-y-6">
           <div className="space-y-2">
-            <h2 className="text-xl font-bold">Number of Images</h2>
+            <h2 className="text-xl font-bold dark:text-gray-300">Number of Images</h2>
             <div className="flex space-x-2">
               <Button variant="default">1</Button>
               <Button variant="outline">2</Button>
@@ -113,8 +104,7 @@ export default function Component() {
           </Button>
         </div>
       </aside>
-
-      <aside className="w-full p-6 bg-white border-l">
+      <aside className="w-full p-6 bg-white dark:bg-[#1d1d2e7e] dark:text-gray-300 ">
         <div className="space-y-6">
           <div className="space-y-2">
             <h2 className="text-xl font-bold">Image Generator</h2>
@@ -125,7 +115,7 @@ export default function Component() {
               </Button>
             </div>
           </div>
-          <div id="Image" className="h-[400px] bg-gray-200 rounded-lg overflow-hidden relative">
+          <div id="Image" className="h-[400px] bg-gray-200 dark:bg-[#1d1d2e7e] rounded-lg overflow-hidden relative">
         {imageSrc && (
           <Image
             src={imageSrc}
