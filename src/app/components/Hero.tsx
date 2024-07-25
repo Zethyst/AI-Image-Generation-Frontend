@@ -94,9 +94,6 @@ const Component: React.FC = () => {
     }
   }, []);
 
-  const handleGenerate = () => {
-    router.replace("/generate");
-  };
   const handleThemeChange = () => {
     const newTheme = !isDarkMode ? "dark" : "light";
     setIsDarkMode(!isDarkMode);
@@ -182,12 +179,12 @@ const Component: React.FC = () => {
                   Describe your vision, and let our AI do the rest.
                 </p>
               </div>
-              <button
-                onClick={handleGenerate}
-                className="w-full bg-[#f1f5f9] dark:bg-gray-700 hover:bg-[#e0e4e7cb] rounded-lg px-3 py-2"
-              >
+              <button className="bg-[#f1f5f9] w-full dark:bg-gray-700 hover:bg-[#e0e4e7cb] rounded-lg px-3 py-2">
+              <Link href="/generate"
+              className="px-32 py-2">
                 Try it Now
-              </button>
+              </Link>
+                </button>
             </CardContent>
           </Card>
           <Card className="p-4 hover:shadow-xl">
